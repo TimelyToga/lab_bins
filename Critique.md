@@ -1,4 +1,5 @@
-# Critiques
+# Critiques by tsb20 and mrk33
+14/01/2016
 
 ## Readability
 What pieces of code help versus obscure your understanding of the algorithm?
@@ -60,6 +61,6 @@ then you should define an interface `BinMethod` that has one method `stack()`
 that returns a boolean. Then many implementations of this Interface can be dropped
 into the live code and work perfectly with minimal changes. You would also have
 to refactor the remaining code to have various outcomes wrapped in a method to
-create more DRY code (Don't Repeat Yourself). 
+create more DRY code (Don't Repeat Yourself).
 
 Disk size should be changeable, or be otherwise set as a final.
