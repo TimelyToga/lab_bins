@@ -33,60 +33,49 @@ public class Bins {
         Bins b = new Bins();
         Scanner input = new Scanner(Bins.class.getClassLoader().getResourceAsStream(DATA_FILE));
         List<Integer> data = b.readData(input);
-
-        PriorityQueue<Disk> pq = new PriorityQueue<Disk>();
-        pq.add(new Disk(0));
-
-        int diskId = 1;
-        int total = 0;
-        for (Integer size : data) {
-            Disk d = pq.peek();
-            if (d.freeSpace() > size) {
-                pq.poll();
-                d.add(size);
-                pq.add(d);
-            } else {
-                Disk d2 = new Disk(diskId);
-                diskId++;
-                d2.add(size);
-                pq.add(d2);
+        List<BinMethod> methodList = new ArrayList<BinMethod>();
+        
+        
+        // Initialize various methods into `methodList`
+        methodList.add(new WorstFitMethod());
+        methodList.add(new WorstFitDecreasingMethod());
+        
+        // Iterate through list of methods
+        for(BinMethod method : methodList){    
+        	// Prep
+        	List<Integer> tempData =  method.prepData(data);
+        	
+            PriorityQueue<Disk> pq = new PriorityQueue<Disk>();
+            pq.add(new Disk(0));
+            int diskId = 1;
+            int total = 0;
+        	
+        	// Iterate through every file and determine where to place it
+        	for(Integer size: tempData){
+                Disk d = pq.peek();
+                if (method.shouldStack(d, size)) {
+                	// Add curFile to existing disk
+                    pq.poll();
+                    d.add(size);
+                    pq.add(d);
+                } else {
+                	// Add curFile to new disk
+                    Disk d2 = new Disk(diskId);
+                    diskId++;
+                    d2.add(size);
+                    pq.add(d2);
+                }
+                total += size;
+        	}
+        
+            System.out.println("total size = " + total / 1000000.0 + "GB");
+            System.out.println();
+            System.out.println(method.getName());
+            System.out.println("number of pq used: " + pq.size());
+            while (!pq.isEmpty()) {
+                System.out.println(pq.poll());
             }
-            total += size;
+            System.out.println();
         }
-
-        System.out.println("total size = " + total / 1000000.0 + "GB");
-        System.out.println();
-        System.out.println("worst-fit method");
-        System.out.println("number of pq used: " + pq.size());
-        while (!pq.isEmpty()) {
-            System.out.println(pq.poll());
-        }
-        System.out.println();
-
-        Collections.sort(data, Collections.reverseOrder());
-        pq.add(new Disk(0));
-
-        diskId = 1;
-        for (Integer size : data) {
-            Disk d = pq.peek();
-            if (d.freeSpace() >= size) {
-                pq.poll();
-                d.add(size);
-                pq.add(d);
-            } else {
-                Disk d2 = new Disk(diskId);
-                diskId++;
-                d2.add(size);
-                pq.add(d2);
-            }
-        }
-
-        System.out.println();
-        System.out.println("worst-fit decreasing method");
-        System.out.println("number of pq used: " + pq.size());
-        while (!pq.isEmpty()) {
-            System.out.println(pq.poll());
-        }
-        System.out.println();
     }
 }
