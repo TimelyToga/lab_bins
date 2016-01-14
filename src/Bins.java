@@ -39,6 +39,8 @@ public class Bins {
         // Initialize various methods into `methodList`
         methodList.add(new WorstFitMethod());
         methodList.add(new WorstFitDecreasingMethod());
+        // Add more methods here at will
+        
         
         // Iterate through list of methods
         for(BinMethod method : methodList){    
