@@ -37,13 +37,15 @@ public class Disk implements Comparable<Disk> {
     /**
      * Adds the given file to this disk.
      *
-     * No error checking is done to ensure the file can fit on this disk.
+     * Checks to make sure the file can fit before it adds it
      *
      * @param filesize size of file to add to this disk
      */
     public void add (int filesize) {
-        myFiles.add(filesize);
-        mySize += filesize;
+    	if(freeSpace() >= filesize) {
+    		myFiles.add(filesize);
+    		mySize += filesize;
+    	}
     }
 
     /**
