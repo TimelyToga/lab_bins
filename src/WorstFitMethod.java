@@ -15,7 +15,7 @@ public class WorstFitMethod implements BinMethod {
 
 	@Override
 	public boolean shouldStack(Disk d, int size)  {
-		return d.freeSpace() > size;
+		return d.freeSpace() >= size;
 	}
 
 	public String getName(){
